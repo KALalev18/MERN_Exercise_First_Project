@@ -42,6 +42,36 @@ app.post('/exercises', async (req, res) =>{
     }
 })
 
+// Get all exercises from our db
+
+app.get('/exercises', async (req, res) =>{
+    try{
+        const exercises = await Exercise.find({})
+        return res.status(200).json({
+            count: exercises.length,
+            data: exercises
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(500).send({message: err.message})
+    }
+})
+
+// Get an exercise from our db by id
+
+app.get('/exercises/:id', async (req, res) =>{
+    try{
+
+        const {id} = req.params
+
+        const exercise = await Exercise.findById(id)
+        return res.status(200).json(exercise)
+    }catch(err){
+        console.log(err.message)
+        res.status(500).send({message: err.message})
+    }
+})
+
 mongoose
     .connect(mongoDBURL)
         .then(() => {
