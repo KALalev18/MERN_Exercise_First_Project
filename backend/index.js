@@ -72,6 +72,51 @@ app.get('/exercises/:id', async (req, res) =>{
     }
 })
 
+// Route to update an exercise
+
+app.put('/exercises/:id', async (req, res) =>{
+    try{
+        if(
+            !req.body.title || 
+            !req.body.sets ||
+            !req.body.reps
+        ){
+            return res.status(400).send({
+                message: "Please fill in all fields."
+            })
+        }
+
+        const {id} = req.params
+
+        const result = await Exercise.findById(id, req.body)
+
+        if (!result){
+            return res.status(404).json({message: "Exercise not found."})
+        }
+        return res.status(200).send({message: 'Exercise updated successfully'})
+
+    }catch(err){
+        console.log(err.message)
+        response.status(500).send({message: err.message})
+    }
+})
+
+// delete a book by id
+
+app.delete('/exercises/:id', async (req, res) => {
+    try{
+        const {id} = req.params
+        const result = await Exercise.findById(id)
+        if (!result){
+            return res.status(404).json({message: 'Exercise not found'})
+        }
+        return res.status(200).send({message: 'Exercise deleted successfully'})
+    }catch(err){
+        console.log(err.message)
+        response.status(500).send({message: err.message})
+    }
+})
+
 mongoose
     .connect(mongoDBURL)
         .then(() => {
