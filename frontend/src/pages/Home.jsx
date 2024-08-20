@@ -7,20 +7,7 @@ import { BsInfoCircle } from 'react-icons/bs'
 import { MdOutlineAddBox, MdOutlineDelete } from 'react-icons/md'
 
 const Home = () => {
-    const [exercises, setExercises] = useState([
-        {
-            _id: '1',
-            title: 'Exercise 1',
-            sets: 3,
-            reps: 10,
-        },
-        {
-            _id: '2',
-            title: 'Exercise 2',
-            sets: 2,
-            reps: 15,
-        }
-    ])
+    const [exercises, setExercises] = useState([])
     const [loading, setLoading] = useState(false)
     useEffect(() => {
         setLoading(true)

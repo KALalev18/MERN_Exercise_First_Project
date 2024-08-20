@@ -10,7 +10,7 @@ const app = express()
 
 app.use(express.json())
 
-// allow all origins - app.use(cors())
+app.use(cors())
 
 // allow custom origins
 
