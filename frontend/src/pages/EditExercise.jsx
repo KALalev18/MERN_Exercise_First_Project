@@ -6,32 +6,34 @@ import { useNavigate, useParams } from 'react-router-dom'
 
 const EditExercise = () =>{
     const [title, setTitle] = useState('')
-    const [set, setSet] = useState('')
-    const [rep, setRep] = useState('')
+    const [sets, setSet] = useState('')
+    const [reps, setRep] = useState('')
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate()
     const {id} = useParams()
     useEffect(() =>{
         setLoading(true)
         axios.get(`http://localhost:5555/exercises/${id}`)
-        .then((res) => {
-            setSet(res.data.set)
-            setRep(res.data.rep)
+        .then ((res) =>{
+            setSet(res.data.reps)
+            setRep(res.data.sets)
             setTitle(res.data.title)
             setLoading(false)
-        }).catch((err) =>{
+        }).catch((err) => {
             setLoading(false)
-            alert("Error occured. Check console for more info")
+            alert("Check console for issues")
             console.log(err)
         })
     }, [])
-
     const handleEditExercise = () =>{
-        
+        if (sets <= 0 || reps <= 0) {
+            alert("Sets and reps cannot be less than or 0.")
+            return
+        }
         const data = {
             title,
-            set,
-            rep,
+            sets,
+            reps,
         }
         setLoading(true)
         axios.put(`http://localhost:5555/exercises/${id}`, data)
@@ -66,7 +68,7 @@ const EditExercise = () =>{
                     <input 
                         type='number' 
                         value={sets} 
-                        onChange={(e) => setSet(Number(e.target.value))}
+                        onChange={(e) => setSet(e.target.value)}
                         className='border-2 border-gray-500 px-4 py-2 w-full'
                     />
                 </div>
@@ -75,7 +77,7 @@ const EditExercise = () =>{
                     <input 
                         type='number' 
                         value={reps} 
-                        onChange={(e) => setRep(Number(e.target.value))}
+                        onChange={(e) => setRep(e.target.value)}
                         className='border-2 border-gray-500 px-4 py-2 w-full'
                     />
                 </div>
@@ -83,7 +85,7 @@ const EditExercise = () =>{
                     Save
                 </button>
             </div>
-        </div>
+        </div>  
     )
 }
 
